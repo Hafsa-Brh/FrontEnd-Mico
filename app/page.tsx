@@ -20,7 +20,7 @@ export default function HomePage() {
       cuisine: "Italian",
       rating: 4.8,
       deliveryTime: "25-35 min",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/84/d7/23/bella-italia-queensway.jpg?w=900&h=500&s=1", // <-- image goes here
       featured: true,
     },
     {
@@ -29,7 +29,7 @@ export default function HomePage() {
       cuisine: "Chinese",
       rating: 4.6,
       deliveryTime: "30-40 min",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/31/76/3d/interior.jpg?w=700&h=400&s=1", // <-- image goes here
       featured: true,
     },
     {
@@ -38,7 +38,7 @@ export default function HomePage() {
       cuisine: "American",
       rating: 4.7,
       deliveryTime: "20-30 min",
-      image: "/placeholder.svg?height=200&width=300",
+      image: "https://mir-s3-cdn-cf.behance.net/project_modules/source/c205f121370803.5630015f2f667.jpg", // <-- image goes here
       featured: true,
     },
   ]
@@ -149,11 +149,11 @@ export default function HomePage() {
             <div className="relative">
               <div className="relative z-10">
                 <Image
-                  src="/placeholder.svg?height=600&width=500"
-                  alt="Food delivery illustration"
+                  src="https://thumbs.dreamstime.com/b/person-using-mobile-app-to-order-food-delivery-emphasizing-convenience-demand-services-illustration-generative-ai-272266324.jpg"
+                  alt="Delicious food delivered"
                   width={500}
                   height={600}
-                  className="w-full h-auto"
+                  className="w-full h-auto rounded-xl shadow-lg border border-orange-100"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 to-amber-400/20 blur-3xl" />

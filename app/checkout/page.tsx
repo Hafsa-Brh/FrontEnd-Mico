@@ -20,6 +20,7 @@ export default function CheckoutPage() {
     instructions: "",
   })
 
+  // Replace this with your real cart/order state!
   const orderItems = [
     { id: "carbonara", name: "Spaghetti Carbonara", price: 16.99, quantity: 1 },
     { id: "bruschetta", name: "Bruschetta", price: 8.99, quantity: 2 },

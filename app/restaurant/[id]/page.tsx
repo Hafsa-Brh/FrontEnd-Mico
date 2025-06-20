@@ -17,96 +17,284 @@ interface CartItem {
   quantity: number
 }
 
-export default function RestaurantPage({ params }: { params: { id: string } }) {
-  const [cart, setCart] = useState<CartItem[]>([])
-  const [activeTab, setActiveTab] = useState("menu")
-
-  const restaurant = {
-    id: params.id,
+// --- RESTAURANTS DATA ---
+const restaurants = [
+  {
+    id: "1",
     name: "Bella Italia",
     cuisine: "Italian",
     rating: 4.8,
     reviewCount: 324,
     deliveryTime: "25-35 min",
     deliveryFee: 2.99,
-    image: "/placeholder.svg?height=300&width=800",
-    description:
-      "Authentic Italian cuisine with fresh ingredients and traditional recipes passed down through generations.",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/84/d7/23/bella-italia-queensway.jpg?w=900&h=500&s=1",
+    description: "Authentic Italian cuisine with fresh ingredients and traditional recipes passed down through generations.",
     address: "123 Main Street, Downtown",
     phone: "+1 (555) 123-4567",
     hours: "11:00 AM - 10:00 PM",
     priceRange: "$$",
+    menuCategories: [
+      {
+        id: "appetizers",
+        name: "Appetizers",
+        items: [
+          {
+            id: "bruschetta",
+            name: "Bruschetta",
+            description: "Toasted bread topped with fresh tomatoes, basil, and garlic",
+            price: 8.99,
+            image: "https://www.cucinabyelena.com/wp-content/uploads/2022/06/0Z4A2548-600x800.jpg",
+          },
+          {
+            id: "calamari",
+            name: "Fried Calamari",
+            description: "Crispy squid rings served with marinara sauce",
+            price: 12.99,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpWjuv9S-RJVCeFbxHM9TJ3ZugqhfayqWoag&s",
+          },
+        ],
+      },
+      {
+        id: "pasta",
+        name: "Pasta",
+        items: [
+          {
+            id: "carbonara",
+            name: "Spaghetti Carbonara",
+            description: "Classic pasta with eggs, cheese, pancetta, and black pepper",
+            price: 16.99,
+            image: "https://www.cookingclassy.com/wp-content/uploads/2020/10/spaghetti-carbonara-01.jpg",
+          },
+          {
+            id: "bolognese",
+            name: "Tagliatelle Bolognese",
+            description: "Fresh pasta with slow-cooked meat sauce",
+            price: 18.99,
+            image: "https://bakerbynature.com/wp-content/uploads/2024/10/bolognese-285.jpg",
+          },
+          {
+            id: "pesto",
+            name: "Penne Pesto",
+            description: "Penne pasta with homemade basil pesto and pine nuts",
+            price: 15.99,
+            image: "https://hillskas.com/wp-content/uploads/2024/10/pesto-pasta.jpg",
+          },
+        ],
+      },
+      {
+        id: "pizza",
+        name: "Pizza",
+        items: [
+          {
+            id: "margherita",
+            name: "Margherita",
+            description: "Fresh mozzarella, tomato sauce, and basil",
+            price: 14.99,
+            image: "https://thumbs.dreamstime.com/b/delicious-margherita-pizza-topped-fresh-mozzarella-basil-leaves-delicious-margherita-pizza-topped-fresh-mozzarella-375689605.jpg",
+          },
+          {
+            id: "pepperoni",
+            name: "Pepperoni",
+            description: "Classic pepperoni with mozzarella and tomato sauce",
+            price: 16.99,
+            image: "https://img.freepik.com/premium-photo/classic-pepperoni-pizza-with-crispy-thin-crust-gooey-mozzarella-cheese-tangy-tomato-sauce-plenty-pepperoni-slices_1310094-103188.jpg",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "4",
+    name: "Sushi Zen",
+    cuisine: "Japanese",
+    rating: 4.9,
+    reviewCount: 412,
+    deliveryTime: "35-45 min",
+    deliveryFee: 3.99,
+    image: "https://static.wixstatic.com/media/6e2a1a_1632ed5e977047779e5f08d2ae851ac3~mv2.jpg/v1/fill/w_640,h_400,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/6e2a1a_1632ed5e977047779e5f08d2ae851ac3~mv2.jpg",
+    description: "Fresh sushi and Japanese cuisine.",
+    address: "456 Sushi Ave, Midtown",
+    phone: "+1 (555) 987-6543",
+    hours: "12:00 PM - 11:00 PM",
+    priceRange: "$$$",
+    menuCategories: [
+      {
+        id: "sushi",
+        name: "Sushi",
+        items: [
+          {
+            id: "salmon-nigiri",
+            name: "Salmon Nigiri",
+            description: "Fresh salmon over rice.",
+            price: 5.99,
+            image: "https://aisforappleau.com/wp-content/uploads/2023/07/how-to-make-sushi-salmon-nigiri-6-500x500.jpg",
+          },
+          {
+            id: "tuna-sashimi",
+            name: "Tuna Sashimi",
+            description: "Fresh tuna served with wasabi and soy sauce.",
+            price: 6.99,
+            image: "https://aubreyskitchen.com/wp-content/uploads/2023/10/tuna-sashimi.jpg",
+          },
+          {
+            id: "California-roll",
+            name: "California Roll",
+            description: "Crab meat, avocado, and cucumber rolled in sushi rice.",
+            price: 8.99,
+            image: "https://www.alyonascooking.com/wp-content/uploads/2018/05/caterpillar-roll-11.jpg",
+          },
+        ],
+      },
+      {
+        id: "noodles",
+        name: "Noodles",
+        items: [
+          {
+            id: "ramen",
+            name: "Ramen",
+            description: "Japanese noodle soup with pork, nori, and green onions.",
+            price: 10.99,
+            image: "https://static.india.com/wp-content/uploads/2024/08/RAMEN-1.jpg##image/jpg",
+          },
+          {
+            id: "udon",
+            name: "Udon",
+            description: "Thick wheat noodles in a savory broth with tempura.",
+            price: 11.99,
+            image: "https://sudachirecipes.com/wp-content/uploads/2023/10/ebiten-udon-thumbnail.jpg",
+          },
+        ],
+      },
+    ],
+  },
+
+  // Add these objects to your restaurants array
+{
+  id: "2",
+  name: "Dragon Palace",
+  cuisine: "Chinese",
+  rating: 4.6,
+  reviewCount: 256,
+  deliveryTime: "30-40 min",
+  deliveryFee: 1.99,
+  image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/31/76/3d/interior.jpg?w=700&h=400&s=1",
+  description: "Traditional Chinese dishes and dim sum in a cozy setting.",
+  address: "789 Dragon St, Chinatown",
+  phone: "+1 (555) 222-3333",
+  hours: "10:00 AM - 11:00 PM",
+  priceRange: "$$",
+  menuCategories: [
+    {
+      id: "starters",
+      name: "Starters",
+      items: [
+        {
+          id: "spring-rolls",
+          name: "Spring Rolls",
+          description: "Crispy rolls stuffed with vegetables.",
+          price: 5.99,
+          image: "https://www.cubesnjuliennes.com/wp-content/uploads/2021/01/Veggie-Spring-Rolls.jpg",
+        },
+        {
+          id: "dumplings",
+          name: "Pork Dumplings",
+          description: "Steamed dumplings filled with pork and chives.",
+          price: 7.99,
+          image: "https://christieathome.com/wp-content/uploads/2021/04/Pork-Chive-Dumplings-updated-5-b.jpg",
+        },
+      ],
+    },
+    {
+      id: "main",
+      name: "Main Dishes",
+      items: [
+        {
+          id: "kung-pao-chicken",
+          name: "Kung Pao Chicken",
+          description: "Spicy stir-fried chicken with peanuts and vegetables.",
+          price: 13.99,
+          image: "https://i0.wp.com/kristineskitchenblog.com/wp-content/uploads/2023/09/kung-pao-chicken-15-2.jpg?fit=1400%2C2100&ssl=1",
+        },
+        {
+          id: "sweet-sour-pork",
+          name: "Sweet & Sour Pork",
+          description: "Pork in a tangy sweet and sour sauce.",
+          price: 12.99,
+          image: "https://tasteasianfood.com/wp-content/uploads/2019/05/sweet-and-sour-pork-featured-image.jpg",
+        },
+      ],
+    },
+  ],
+},
+{
+  id: "3",
+  name: "Burger House",
+  cuisine: "American",
+  rating: 4.7,
+  reviewCount: 189,
+  deliveryTime: "20-30 min",
+  deliveryFee: 2.49,
+  image: "https://mir-s3-cdn-cf.behance.net/project_modules/source/c205f121370803.5630015f2f667.jpg",
+  description: "Juicy burgers, crispy fries, and classic shakes.",
+  address: "321 Burger Lane, Uptown",
+  phone: "+1 (555) 444-5555",
+  hours: "11:00 AM - 12:00 AM",
+  priceRange: "$",
+  menuCategories: [
+    {
+      id: "burgers",
+      name: "Burgers",
+      items: [
+        {
+          id: "classic-burger",
+          name: "Classic Burger",
+          description: "Beef patty, lettuce, tomato, onion, and house sauce.",
+          price: 9.99,
+          image: "https://www.iheartnaptime.net/wp-content/uploads/2023/05/Best-Hamburger-Recipe-I-Heart-Naptime-500x500.jpg",
+        },
+        {
+          id: "cheese-burger",
+          name: "Cheese Burger",
+          description: "Beef patty, cheddar cheese, lettuce, tomato, onion.",
+          price: 10.99,
+          image: "https://images.eatsmarter.com/sites/default/files/styles/max_size/public/hamburger-with-cheese-onion-and-tomato-528370.jpg",
+        },
+      ],
+    },
+    {
+      id: "sides",
+      name: "Sides",
+      items: [
+        {
+          id: "fries",
+          name: "French Fries",
+          description: "Crispy golden fries.",
+          price: 3.99,
+          image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3D5MyF_dDlegg_9lgz5XleXv4vNFxB1QqdA&s",
+        },
+      ],
+    },
+  ],
+},
+  // Add more restaurants here...
+]
+
+export default function RestaurantPage({ params }: { params: { id: string } }) {
+  const [cart, setCart] = useState<CartItem[]>([])
+  const [activeTab, setActiveTab] = useState("menu")
+
+  // Find the restaurant by id
+  const restaurant = restaurants.find(r => r.id === params.id)
+
+  if (!restaurant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <h1 className="text-2xl font-bold">Restaurant not found.</h1>
+      </div>
+    )
   }
 
-  const menuCategories = [
-    {
-      id: "appetizers",
-      name: "Appetizers",
-      items: [
-        {
-          id: "bruschetta",
-          name: "Bruschetta",
-          description: "Toasted bread topped with fresh tomatoes, basil, and garlic",
-          price: 8.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-        {
-          id: "calamari",
-          name: "Fried Calamari",
-          description: "Crispy squid rings served with marinara sauce",
-          price: 12.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-      ],
-    },
-    {
-      id: "pasta",
-      name: "Pasta",
-      items: [
-        {
-          id: "carbonara",
-          name: "Spaghetti Carbonara",
-          description: "Classic pasta with eggs, cheese, pancetta, and black pepper",
-          price: 16.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-        {
-          id: "bolognese",
-          name: "Tagliatelle Bolognese",
-          description: "Fresh pasta with slow-cooked meat sauce",
-          price: 18.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-        {
-          id: "pesto",
-          name: "Penne Pesto",
-          description: "Penne pasta with homemade basil pesto and pine nuts",
-          price: 15.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-      ],
-    },
-    {
-      id: "pizza",
-      name: "Pizza",
-      items: [
-        {
-          id: "margherita",
-          name: "Margherita",
-          description: "Fresh mozzarella, tomato sauce, and basil",
-          price: 14.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-        {
-          id: "pepperoni",
-          name: "Pepperoni",
-          description: "Classic pepperoni with mozzarella and tomato sauce",
-          price: 16.99,
-          image: "/placeholder.svg?height=150&width=200",
-        },
-      ],
-    },
-  ]
+  const menuCategories = restaurant.menuCategories
 
   const addToCart = (item: any) => {
     setCart((prevCart) => {
